@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <!-- 5 -->
+    <input type="text" id="input" placeholder="enter Latitude">
+    <input type="text" id="input2" placeholder="enter Longitude">
+    <button id="btn" onclick="showLocation()">check by cordinates</button>
+    <p id="p"></p>
+
+    <!-- 6 -->
+    <h1>Find your current location</h1>
+    <button onclick="getLocation()">click</button>
+    <p id="p1"></p>
+
+
+
+    <script>
+        // --5--
+
+        const api_key = "c6ae724e130f047f472d22e62d7e1ba8"
+
+        function byCordinate(Latitude, Longitude) {
+            let URL = `https://api.openweathermap.org/data/2.5/weather?lat=${Latitude}&lon=${Longitude}&appid=${api_key}`
+            fetch(URL, { method: "GET" })
+                .then((res) => { return res.json(); })
+                .then((data) => {
+                    if (data.col === 400) {
+                        document.getElementById("p").innerText = "cannot find city";
+                    }
+                    else {
+                        document.getElementById("p").innerText = `city: ${data.name}, current temp: ${data.main.temp},
+                                max temp: ${data.main.temp_max}, min temp: ${data.main.temp_min}`
+                        console.log(data);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+
+        function showLocation() {
+            let latt = document.getElementById("input").value;
+            let lonn = document.getElementById("input2").value;
+            byCordinate(latt, lonn)
+        }
+
+        const p1 = document.getElementById("p1")
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                p1.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            p1.innerHTML = "Latitude: " + position.coords.latitude +
+                "<br>Longitude: " + position.coords.longitude;
+        }
+
+
+    </script>
+</body>
+
+</html>
