@@ -63,6 +63,7 @@
         }
 
         function showPosition(position) {
+            byCordinate(position.coords.latitude, position.coords.longitude)
             p1.innerHTML = "Latitude: " + position.coords.latitude +
                 "<br>Longitude: " + position.coords.longitude;
         }
